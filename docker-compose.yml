@@ -1,0 +1,60 @@
+version: '3.9'
+services:
+  api-administrador-e8:
+    container_name: api-administrador-e8
+    image: nettojulio/api-administrador-e8
+    environment:
+      RDS_HOSTNAME: db-e8-desafio2.ccbiucioexib.us-east-1.rds.amazonaws.com
+      RDS_PORT: 5432
+      RDS_ADMIN_DB_NAME: api_administrador_e8_ilab2
+      RDS_USERNAME: postgres
+      RDS_PASSWORD: postgres
+      PRIVATE_KEY: 123456789 123456789 123456789 12
+      SECRET_KEY: 123456789 123456789 123456789 12
+    ports:
+      - "8080:8080"
+    restart: on-failure
+
+  api-pedidos-e8:
+    container_name: api-pedidos-e8
+    image: nettojulio/api-pedidos-e8
+    environment:
+      RDS_HOSTNAME: db-e8-desafio2.ccbiucioexib.us-east-1.rds.amazonaws.com
+      RDS_PORT: 5432
+      RDS_ORDER_DB_NAME: db_orders_api
+      RDS_USERNAME: postgres
+      RDS_PASSWORD: postgres
+      URL_ADMIN_AUTH_ORDER_API: "http://api-administrador-e8:8080/validar"
+      AWS_ACCESS_KEY: AKIA3AA6LECFSAXAUGNK
+      AWS_SECRET_KEY: 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
+    ports:
+      - "8081:8081"
+    depends_on:
+      - api-administrador-e8
+    restart: on-failure
+
+  api-usuarios-e8:
+    container_name: api-usuarios-e8
+    image: nettojulio/api-usuarios-e8
+    environment:
+      RDS_HOSTNAME: db-e8-desafio2.ccbiucioexib.us-east-1.rds.amazonaws.com
+      RDS_PORT: 5432
+      RDS_USERS_DB_NAME: api_usuarios
+      RDS_USERNAME: postgres
+      RDS_PASSWORD: postgres
+      URL_ADMIN_AUTH_ORDER_API: "http://api-administrador-e8:8080/validar"
+    ports:
+      - "8082:8082"
+    depends_on:
+      - api-administrador-e8
+    restart: on-failure
+
+    ses-sqs-consumer:
+      container_name: ses-sqs-consumer
+      image: jessicazanchetta/ses-sqs-consumer
+      environment:
+        AWS_ACCESS_KEY: AKIA3AA6LECFSAXAUGNK
+        AWS_SECRET_KEY: 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
+      ports:
+        - "8084:8084"
+      restart: on-failure

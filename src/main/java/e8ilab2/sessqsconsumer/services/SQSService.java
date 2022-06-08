@@ -45,10 +45,11 @@ public class SQSService {
         // System.out.println("Quantidade de mensagens: " + messages.size());
         for (Message mess : messages) {
             System.out.println("Mensagem: " + mess.body());
-            //SESService.sendMessage("Mensagem: " + LocalDate.now());
+
             var jsonString = mess.body();
             PedidoDTO pedidoDTO = new Gson().fromJson(jsonString, PedidoDTO.class);
             System.err.println(pedidoDTO.getUsuarioEmail());
+            //SESService.sendMessage("Mensagem: " + LocalDate.now(), pedidoDTO.getUsuarioEmail(), pedidoDTO);
         }
 
         deleteMessages(sqsClient, createResult.queueUrl(),  messages);

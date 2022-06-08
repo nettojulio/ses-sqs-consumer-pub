@@ -1,4 +1,5 @@
 package e8ilab2.sessqsconsumer.services;
+import e8ilab2.sessqsconsumer.dto.PedidoDTO;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.ses.SesClient;
 import javax.mail.Message;
@@ -22,7 +23,7 @@ import software.amazon.awssdk.services.ses.model.RawMessage;
 import software.amazon.awssdk.services.ses.model.SesException;
 
 public class SESService {
-    public static void sendMessage(String message) {
+    public static void sendMessage(String message, String email, PedidoDTO pedidoDTO) {
         AwsCredentialsProvider credentialsProvider = new AwsCredentialsProvider() {
             @Override
             public AwsCredentials resolveCredentials() {
@@ -51,13 +52,14 @@ public class SESService {
         String bodyHTML = "<html>"
                 + "<head></head>"
                 + "<body>"
-                + "<h1>Seu pedido acaba de ser concluido!</h1>"
+                + "<h1>Olá" + pedidoDTO.getUsuarioName() + "!</h1>"
+                + "<h1>Seu pedido" + pedidoDTO.getId()+ "acaba de ser concluido!</h1>"
                 + "<p> Enviado pelo Java.</p>"
                 + "</body>"
                 + "</html>";
 
         try {
-            send(client, "jessica.zanchetta@hotmail.com", "jessica.zanchetta@ifood.com", "Pedido confirmado",
+            send(client, "jessica.zanchetta@hotmail.com", email, "Pedido confirmado",
                     bodyText, bodyHTML);
             client.close();
 
