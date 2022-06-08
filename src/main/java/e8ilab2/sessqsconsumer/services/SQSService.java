@@ -1,5 +1,7 @@
 package e8ilab2.sessqsconsumer.services;
 
+import com.google.gson.Gson;
+import e8ilab2.sessqsconsumer.dto.PedidoDTO;
 import software.amazon.awssdk.auth.credentials.AwsCredentials;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
@@ -44,6 +46,9 @@ public class SQSService {
         for (Message mess : messages) {
             System.out.println("Mensagem: " + mess.body());
             //SESService.sendMessage("Mensagem: " + LocalDate.now());
+            var jsonString = mess.body();
+            PedidoDTO pedidoDTO = new Gson().fromJson(jsonString, PedidoDTO.class);
+            System.err.println(pedidoDTO.getUsuarioEmail());
         }
 
         deleteMessages(sqsClient, createResult.queueUrl(),  messages);
