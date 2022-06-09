@@ -1,49 +1,30 @@
 package e8ilab2.sessqsconsumer.services;
+
 import e8ilab2.sessqsconsumer.dto.PedidoDTO;
+import software.amazon.awssdk.core.SdkBytes;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.ses.SesClient;
+import software.amazon.awssdk.services.ses.model.RawMessage;
+import software.amazon.awssdk.services.ses.model.SendRawEmailRequest;
+import software.amazon.awssdk.services.ses.model.SesException;
+
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
-import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Properties;
 
-import software.amazon.awssdk.auth.credentials.AwsCredentials;
-import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
-import software.amazon.awssdk.core.SdkBytes;
-import software.amazon.awssdk.services.ses.model.SendRawEmailRequest;
-import software.amazon.awssdk.services.ses.model.RawMessage;
-import software.amazon.awssdk.services.ses.model.SesException;
+import static e8ilab2.sessqsconsumer.services.AWSCredentials.awsCredentialsDispatcher;
 
 public class SESService {
     public static void sendMessage(String message, String email, PedidoDTO pedidoDTO) {
-        AwsCredentialsProvider credentialsProvider = new AwsCredentialsProvider() {
-            @Override
-            public AwsCredentials resolveCredentials() {
-                return new AwsCredentials() {
-                    @Override
-                    public String accessKeyId() {
-                        return System.getenv("AWS_ACCESS_KEY");
-                    }
-
-                    @Override
-                    public String secretAccessKey() {
-                        return System.getenv("AWS_SECRET_KEY");
-                    }
-                };
-            }
-        };
 
         Region region = Region.US_EAST_1;
         SesClient client = SesClient.builder()
-                .credentialsProvider(credentialsProvider)
+                .credentialsProvider(awsCredentialsDispatcher())
                 .region(region)
                 .build();
 
@@ -53,7 +34,7 @@ public class SESService {
                 + "<head></head>"
                 + "<body>"
                 + "<h1>Olá" + pedidoDTO.getUsuarioName() + "!</h1>"
-                + "<h1>Seu pedido" + pedidoDTO.getId()+ "acaba de ser concluido!</h1>"
+                + "<h1>Seu pedido" + pedidoDTO.getId() + "acaba de ser concluido!</h1>"
                 + "<p> Enviado pelo Java.</p>"
                 + "</body>"
                 + "</html>";

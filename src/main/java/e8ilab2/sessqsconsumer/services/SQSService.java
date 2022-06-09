@@ -2,37 +2,20 @@ package e8ilab2.sessqsconsumer.services;
 
 import com.google.gson.Gson;
 import e8ilab2.sessqsconsumer.dto.PedidoDTO;
-import software.amazon.awssdk.auth.credentials.AwsCredentials;
-import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.sqs.SqsClient;
 import software.amazon.awssdk.services.sqs.model.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
-public class SQSService {
-    public static void messageReader(){
-        AwsCredentialsProvider credentialsProvider = new AwsCredentialsProvider() {
-            @Override
-            public AwsCredentials resolveCredentials() {
-                return new AwsCredentials() {
-                    @Override
-                    public String accessKeyId() {
-                        return System.getenv("AWS_ACCESS_KEY");
-                    }
+import static e8ilab2.sessqsconsumer.services.AWSCredentials.awsCredentialsDispatcher;
 
-                    @Override
-                    public String secretAccessKey() {
-                        return System.getenv("AWS_SECRET_KEY");
-                    }
-                };
-            }
-        };
+public class SQSService {
+    public static void messageReader() {
 
         SqsClient sqsClient = SqsClient.builder()
                 .region(Region.US_EAST_1)
-                .credentialsProvider(credentialsProvider)
+                .credentialsProvider(awsCredentialsDispatcher())
                 .build();
 
         // ===== Busca uma Fila =====
@@ -52,12 +35,12 @@ public class SQSService {
             //SESService.sendMessage("Mensagem: " + LocalDate.now(), pedidoDTO.getUsuarioEmail(), pedidoDTO);
         }
 
-        deleteMessages(sqsClient, createResult.queueUrl(),  messages);
+        deleteMessages(sqsClient, createResult.queueUrl(), messages);
 
         sqsClient.close();
     }
 
-    public static  List<Message> receiveMessages(SqsClient sqsClient, String queueUrl) {
+    public static List<Message> receiveMessages(SqsClient sqsClient, String queueUrl) {
         ReceiveMessageRequest receiveMessageRequest = ReceiveMessageRequest.builder()
                 .queueUrl(queueUrl)
                 .waitTimeSeconds(20) // Long Polling Explicar conceito para econmizar $$
@@ -67,7 +50,7 @@ public class SQSService {
         return messages;
     }
 
-    public static void deleteMessages(SqsClient sqsClient, String queueUrl,  List<Message> messages) {
+    public static void deleteMessages(SqsClient sqsClient, String queueUrl, List<Message> messages) {
         for (Message message : messages) {
             DeleteMessageRequest deleteMessageRequest = DeleteMessageRequest.builder()
                     .queueUrl(queueUrl)
