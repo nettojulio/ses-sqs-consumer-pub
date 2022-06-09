@@ -56,5 +56,5 @@ services:
         AWS_ACCESS_KEY: AKIA3AA6LECFSAXAUGNK
         AWS_SECRET_KEY: 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
       ports:
-        - "8084:8084"
+        - "8083:8083"
       restart: on-failure
