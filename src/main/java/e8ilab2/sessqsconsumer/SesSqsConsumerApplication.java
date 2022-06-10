@@ -7,13 +7,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class SesSqsConsumerApplication {
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 
-		SpringApplication.run(SesSqsConsumerApplication.class, args);
-		while(true){
-			SQSService.messageReader();
-			// Thread.sleep(1000); // Desabilitado por causa do Long Polling para econmizar $$
-		}
-	}
+        SpringApplication.run(SesSqsConsumerApplication.class, args);
+        while (true) {
+            SQSService.messageReader();
+        }
+    }
 
 }
