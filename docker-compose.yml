@@ -4,7 +4,7 @@ services:
     container_name: api-administrador-e8
     image: nettojulio/api-administrador-e8
     environment:
-      RDS_HOSTNAME: db-e8-desafio2.ccbiucioexib.us-east-1.rds.amazonaws.com
+      RDS_HOSTNAME: localhost
       RDS_PORT: 5432
       RDS_ADMIN_DB_NAME: api_administrador_e8_ilab2
       RDS_USERNAME: postgres
@@ -19,14 +19,16 @@ services:
     container_name: api-pedidos-e8
     image: nettojulio/api-pedidos-e8
     environment:
-      RDS_HOSTNAME: db-e8-desafio2.ccbiucioexib.us-east-1.rds.amazonaws.com
+      RDS_HOSTNAME: localhost
       RDS_PORT: 5432
       RDS_ORDER_DB_NAME: db_orders_api
       RDS_USERNAME: postgres
       RDS_PASSWORD: postgres
-      URL_ADMIN_AUTH_ORDER_API: "http://api-administrador-e8:8080/validar"
-      AWS_ACCESS_KEY: AKIA3AA6LECFSAXAUGNK
-      AWS_SECRET_KEY: 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
+      URL_ADMIN_AUTH_API: "http://api-administrador-e8:8080/validar"
+      AWS_ACCESS_KEY: fc89e6bd-0ace-42ac-a66b-ff1c778a7179
+      AWS_SECRET_KEY: 64293fc6-12b8-43a0-9cb4-e566492e2839
+      AWS_SQS_QUEUE_NAME: teste
+      AWS_SQS_QUEUE_ACCOUNT_ID: 1234567890
     ports:
       - "8081:8081"
     depends_on:
@@ -37,12 +39,12 @@ services:
     container_name: api-usuarios-e8
     image: nettojulio/api-usuarios-e8
     environment:
-      RDS_HOSTNAME: db-e8-desafio2.ccbiucioexib.us-east-1.rds.amazonaws.com
+      RDS_HOSTNAME: localhost
       RDS_PORT: 5432
       RDS_USERS_DB_NAME: api_usuarios
       RDS_USERNAME: postgres
       RDS_PASSWORD: postgres
-      URL_ADMIN_AUTH_ORDER_API: "http://api-administrador-e8:8080/validar"
+      URL_ADMIN_AUTH_API: "http://api-administrador-e8:8080/validar"
     ports:
       - "8082:8082"
     depends_on:
@@ -50,11 +52,14 @@ services:
     restart: on-failure
 
   ses-sqs-consumer-e8:
-      container_name: ses-sqs-consumer-e8
-      image: nettojulio/ses-sqs-consumer-e8
-      environment:
-        AWS_ACCESS_KEY: AKIA3AA6LECFSAXAUGNK
-        AWS_SECRET_KEY: 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
-      ports:
-        - "8083:8083"
-      restart: on-failure
+    container_name: ses-sqs-consumer-e8
+    image: nettojulio/ses-sqs-consumer-e8
+    environment:
+      AWS_ACCESS_KEY: fc89e6bd-0ace-42ac-a66b-ff1c778a7179
+      AWS_SECRET_KEY: 64293fc6-12b8-43a0-9cb4-e566492e2839
+      AWS_SQS_QUEUE_NAME: teste
+      AWS_SQS_QUEUE_ACCOUNT_ID: 1234567890123456
+      AWS_SES_EMAIL_SENDER: teste@teste.com.br
+    ports:
+      - "8083:8083"
+    restart: on-failure
