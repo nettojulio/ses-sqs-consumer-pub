@@ -6,7 +6,6 @@ RUN mvn -T 1C clean install -Dmaven.test.skip -DskipTests -Dmaven.javadoc.skip=t
     && cp ${JAR_FILE} /app.jar \
     && rm -fr *
 EXPOSE 8080
-COPY ./newrelic /newrelic
 COPY ./newrelic-api.jar /newrelic-api.jar
 COPY ./newrelic.jar /newrelic.jar
 COPY ./newrelic.yml /newrelic.yml
