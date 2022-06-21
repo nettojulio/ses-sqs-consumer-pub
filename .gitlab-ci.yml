@@ -1,4 +1,4 @@
-image: nettojulio/ci-cd-e8:java-maven
+image: maven:3.8.6-openjdk-18-slim
 
 stages:
   - build
@@ -31,8 +31,8 @@ push-image:
   dependencies:
     - test
   script:
-    - docker build -t nettojulio/ses-sqs-consumer-e8:cicdtest -f Dockerfile . # ATENCAO COM A TAG
-    - docker push nettojulio/ses-sqs-consumer-e8:cicdtest # ATENCAO COM A TAG
+    - docker build -t nettojulio/ses-sqs-consumer-e8:stable -f Dockerfile .
+    - docker push nettojulio/ses-sqs-consumer-e8:stable
 
 deploy:
   stage: deploy
