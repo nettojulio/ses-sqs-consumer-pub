@@ -811,5 +811,5 @@ hs_err_pid*
 ### AndroidStudio Patch ###
 
 !/gradle/wrapper/gradle-wrapper.jar
-
+.gitlab-ci.yml
 # End of https://www.toptal.com/developers/gitignore/api/windows,macos,linux,visualstudiocode,eclipse,intellij,intellij+all,jetbrains,jetbrains+all,maven,gradle,node,nohup,git,androidstudio
