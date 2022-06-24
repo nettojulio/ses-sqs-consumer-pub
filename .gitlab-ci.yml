@@ -36,6 +36,8 @@ push-image:
 
 deploy:
   stage: deploy
+  image: nettojulio/ubuntu-ansible:latest
   script:
-    - echo "Deploying application..."
-    - echo "Application successfully deployed."
+    - echo "$CONTEUDO_CHAVE_PRIVADA" | tr -d '\r' >> chave.pem
+    - chmod 400 chave.pem
+    - ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i hosts deploy.yml -u ubuntu --private-key chave.pem
