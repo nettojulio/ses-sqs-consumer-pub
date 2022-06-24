@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ses-sqs-consumer-deployment
+  namespace: grupo-08-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ses-sqs-consumer-e8
+  template:
+    metadata:
+      labels:
+        app: ses-sqs-consumer-e8
+    spec:
+      containers:
+        - name: ses-sqs-consumer-e8
+          image: nettojulio/ses-sqs-consumer-e8:latest
+          env:
+            - name: AWS_ACCESS_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: config-map-ses-sqs-consumer-e8
+                  key: AWS_ACCESS_KEY
+            - name: AWS_SECRET_KEY
+              valueFrom:
+                configMapKeyRef:
+                  name: config-map-ses-sqs-consumer-e8
+                  key: AWS_SECRET_KEY
+            - name: AWS_SQS_QUEUE_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: config-map-ses-sqs-consumer-e8
+                  key: AWS_SQS_QUEUE_NAME
+            - name: AWS_SQS_QUEUE_ACCOUNT_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: config-map-ses-sqs-consumer-e8
+                  key: AWS_SQS_QUEUE_ACCOUNT_ID
+            - name: AWS_SES_EMAIL_SENDER
+              valueFrom:
+                configMapKeyRef:
+                  name: config-map-ses-sqs-consumer-e8
+                  key: AWS_SES_EMAIL_SENDER
+          ports:
+            - containerPort: 8083
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "0.25"
+            limits:
+              memory: "512Mi"
+              cpu: "0.5"

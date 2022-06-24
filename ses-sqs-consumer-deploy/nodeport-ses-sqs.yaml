@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodeport-ses-sqs-consumer-e8
+spec:
+  type: NodePort
+  ports:
+    - port: 8083
+      nodePort: 30103
+  selector:
+    app: ses-sqs-consumer-e8

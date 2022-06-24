@@ -1,0 +1,12 @@
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: ses-sqs-consumer-e8-autoscale
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ses-sqs-consumer-deployment
+  minReplicas: 1
+  maxReplicas: 2
+  targetCPUUtilizationPercentage: 70

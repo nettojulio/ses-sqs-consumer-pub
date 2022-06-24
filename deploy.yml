@@ -1,0 +1,18 @@
+- hosts: all
+  tasks:
+    - name: "Upload Files"
+      copy:
+        src: "ses-sqs-consumer-deploy"
+        dest: "/home/ubuntu/grupo08/"
+
+    - name: "Apply configmap-ses-sqs.yaml"
+      shell: kubectl apply -f /home/ubuntu/grupo08/ses-sqs-consumer-deploy/configmap-ses-sqs.yaml -n grupo-08-dev
+
+    - name: "Apply clusterip-ses-sqs.yaml"
+      shell: kubectl apply -f /home/ubuntu/grupo08/ses-sqs-consumer-deploy/clusterip-ses-sqs.yaml -n grupo-08-dev
+
+    - name: "Apply deployment-ses-sqs.yaml"
+      shell: kubectl apply -f /home/ubuntu/grupo08/ses-sqs-consumer-deploy/deployment-ses-sqs.yaml -n grupo-08-dev
+
+    - name: "Apply hpa-ses-sqs.yaml"
+      shell: kubectl apply -f /home/ubuntu/grupo08/ses-sqs-consumer-deploy/hpa-ses-sqs.yaml -n grupo-08-dev

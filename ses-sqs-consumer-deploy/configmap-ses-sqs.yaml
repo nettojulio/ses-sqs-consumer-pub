@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-map-ses-sqs-consumer-e8
+data:
+  AWS_ACCESS_KEY: AKIA3AA6LECFZ2H44GKR
+  AWS_SECRET_KEY: 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
+  AWS_SQS_QUEUE_NAME: eq8-sqs-desafio
+  AWS_SQS_QUEUE_ACCOUNT_ID: "755977887883"
+  AWS_SES_EMAIL_SENDER: "jessica.zanchetta@ifood.com.br"

@@ -1,0 +1,4 @@
+kubectl delete -f /home/ubuntu/grupo08/ses-sqs-consumer-deploy/configmap-ses-sqs.yaml --namespace=grupo-08-dev
+kubectl delete -f /home/ubuntu/grupo08/ses-sqs-consumer-deploy/clusterip-ses-sqs.yaml --namespace=grupo-08-dev
+kubectl delete -f /home/ubuntu/grupo08/ses-sqs-consumer-deploy/deployment-ses-sqs.yaml --namespace=grupo-08-dev
+kubectl delete -f /home/ubuntu/grupo08/ses-sqs-consumer-deploy/hpa-ses-sqs.yaml --namespace=grupo-08-dev
