@@ -5,6 +5,9 @@
         src: "ses-sqs-consumer-deploy"
         dest: "/home/ubuntu/grupo08/"
 
+    - name: "Apply secret-ses-sqs.yaml"
+      shell: kubectl apply -f /home/ubuntu/grupo08/ses-sqs-consumer-deploy/secret-ses-sqs.yaml -n grupo-08-dev
+
     - name: "Apply configmap-ses-sqs.yaml"
       shell: kubectl apply -f /home/ubuntu/grupo08/ses-sqs-consumer-deploy/configmap-ses-sqs.yaml -n grupo-08-dev
 
